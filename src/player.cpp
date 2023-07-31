@@ -9,7 +9,9 @@
 Player::Player(Entity &character)
     : entity(character) {
     keyboardState = SDL_GetKeyboardState(NULL);
-    gravity = 0.1f;
+    gravity = 0.08f;
+    yVelocityDown = -7;
+    isJumping = false;
 }
 Entity& Player::getEntity(){
     return entity;
@@ -24,6 +26,13 @@ float Player::getYSpeed(){
 float Player::getGravity(){
     return gravity;
 }
+void Player::setCollided(bool x){
+    collided = x;
+}
+bool Player::getCollided(){
+    return collided;
+}
+
 void Player::moveCharacter(float deltatime){
     int currentX, currentY;
 
@@ -43,20 +52,30 @@ void Player::moveCharacter(float deltatime){
     }
     if (keyboardState[SDL_SCANCODE_SPACE] && !isJumping)
     {
-        
-       isJumping = true;
-       yVelocityUp = 5;
-       yVelocityDown = -5;
-
-    //    currentY = getEntity().getCurrentFrame().y;
-    //    if (currentY < 0)
-    //         currentY = 0;
-        // getEntity().setCurrentFrameY(currentY - Yspeed);
-    }
+     
+            isJumping = true;
+            yVelocityUp = 7;
+            yVelocityDown = -7;
+            collided = false;
+        }
 
     
-
 }
+
+SDL_bool Player::isColliding(SDL_Rect &obj){
+    
+    SDL_Rect tmp2 = entity.getCurrentFrame();
+
+    if (tmp2.x + tmp2.w >= obj.x &&
+        obj.x + obj.w >= tmp2.x &&
+        tmp2.y + tmp2.h >= obj.y &&
+        obj.y + obj.h >= tmp2.y 
+        )
+       return SDL_TRUE;
+    else
+       return SDL_FALSE;
+}
+
 
 void Player::applyGravity(float deltatime){
 
@@ -68,22 +87,35 @@ void Player::applyGravity(float deltatime){
         
         if(yVelocityUp >= 0.3){
             yVelocityUp -= gravity;
-            getEntity().setCurrentFrameY(currentY - yVelocityUp);
-            std::cout << (entity.getCurrentFrame().y + yVelocityUp * gravity) << std::endl;
-        
+            getEntity().setCurrentFrameY(currentY - yVelocityUp * gravity);
         }
-        else{
+        else {
             yVelocityDown += gravity;
-            entity.setCurrentFrameY(entity.getCurrentFrame().y + yVelocityDown * gravity);
-            std::cout << (entity.getCurrentFrame().y + yVelocityDown * gravity) << std::endl;
+            entity.setCurrentFrameY(currentY + yVelocityDown * gravity);
+            std::cout << entity.getCurrentFrame().y << std::endl;
         }
-        //std::cout << entity.getCurrentFrame().y << " " << yVelocity<< " " << deltatime << std::endl;
     } 
+    else if (!collided){
+        std::cout << "falling not jumping" << std::endl;
+        yVelocityDown += gravity;
+        entity.setCurrentFrameY(entity.getCurrentFrame().y + yVelocityDown * gravity);
+    }
 
-    if (entity.getCurrentFrame().y >= (672 - (96 * 2)))
+    if (collided)
     {
+        std::cout << "fell" << std::endl;
         isJumping = false;
-        yVelocityUp = 0;
-        yVelocityDown = 0;
+        yVelocityUp = 7;
+        yVelocityDown = -7;
+        //collided = false;
     }
 }
+
+void Player::collide(SDL_Rect &obj){
+    std::cout << entity.getCurrentFrame().y << std::endl;
+    entity.setCurrentFrameY(obj.y - obj.h);
+}
+//  672
+//  545
+//  480
+//  576

@@ -4,6 +4,7 @@
 #include <iostream>
 #include "Entity.hpp"
 #include <vector>
+#include "Player.hpp"
 
 Render::Render(const char* title, int width, int height):window(NULL), renderer(NULL){
     window = SDL_CreateWindow(title, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WINDOW_SHOWN);
@@ -27,7 +28,7 @@ SDL_Texture* Render::loadTexture(const char* texture){
 void Render::clear(){
     SDL_RenderClear(renderer);
 } 
-void Render::render(std::vector <Entity>entity ){
+void Render::render(std::vector <Entity>entity, Player& player ){
     // SDL_Rect src;
     // src.x = entity.getCurrentFrame().x;
     // src.y = entity.getCurrentFrame().y;
@@ -46,7 +47,7 @@ void Render::render(std::vector <Entity>entity ){
         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+        {0, 0, 0, 0, 0, 0, 0, 1, 1, 0},
         {1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
     };
     
@@ -59,7 +60,21 @@ void Render::render(std::vector <Entity>entity ){
             {
                 SDL_Rect destRect = {col * width, row * height, width, height};
                 SDL_RenderCopy(renderer, entity[tileType].getTexture(), NULL, &destRect);
+                if(player.isColliding(destRect) && tileType == 1){
+                    std::cout << "Collision detected ground" << std::endl;
+                    player.setCollided(true);
+                    player.collide(destRect);
+                }
+            //     else {
+            //         player.setCollided(false);
+            //    //     std::cout << "Collision detected sky" << std::endl;
+            //     }
+                // else if (player.isColliding(destRect) && tileType == 1)
+                // {
+                //     player.setCollided(false);
+                // }
             }
+           
         }
     }
 }
