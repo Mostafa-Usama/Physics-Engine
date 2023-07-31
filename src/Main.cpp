@@ -40,9 +40,12 @@ int main(int argc, char* argv[]){
 
     Uint32 lastTime = SDL_GetTicks();
     float deltaTime = 0.0f;
-
+    //float fps = 1 / 60;
+    
     bool gameRunning = true;
     while (gameRunning){
+        //Uint32 start = SDL_GetTicks();
+
         Uint32 currentTime = SDL_GetTicks();
         deltaTime = (currentTime - lastTime) / 1000.0f; // Convert to seconds
         lastTime = currentTime;
@@ -52,14 +55,21 @@ int main(int argc, char* argv[]){
                 gameRunning = false;
             }
         }
+            renderWindow.clear();
             player.moveCharacter(deltaTime);
             player.applyGravity(deltaTime);
-            renderWindow.clear();
             renderWindow.render(tileTextures, player);
             renderWindow.renderCharacter(player);
+
+            // Uint32 end = SDL_GetTicks();
+            // if(end - start < fps){
+            //     while(end - start < fps){
+            //     end = SDL_GetTicks();
+            //     }
+            // }
+
             renderWindow.display();
-        
-        
+            
     }
     
 

@@ -16,15 +16,17 @@ class Player{
         void applyGravity(float deltatime);
         SDL_bool isColliding(SDL_Rect &obj);
         void collide(SDL_Rect &obj);
+        bool getFacing();
 
     private:
         Entity &entity;
         float Xspeed = 1;
-        float Yspeed = 10;
+        float Yspeed = 200;
         float gravity;
         float yVelocityUp;
         float yVelocityDown; // Vertical velocity
         bool isJumping;
         bool collided = false;
+        bool isFacingRight;
         const Uint8 *keyboardState;
 };

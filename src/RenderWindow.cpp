@@ -80,12 +80,18 @@ void Render::render(std::vector <Entity>entity, Player& player ){
 }
 
 void Render::renderCharacter(Player &entity){
+    
     int width = entity.getEntity().getCurrentFrame().w * 3;
     int height = entity.getEntity().getCurrentFrame().h * 3;
     int x = entity.getEntity().getCurrentFrame().x;
     int y = entity.getEntity().getCurrentFrame().y;
     SDL_Rect destRect = {x, y, width, height};
-    SDL_RenderCopy(renderer, entity.getEntity().getTexture(), NULL, &destRect);
+    SDL_RendererFlip flip;
+    if (!entity.getFacing()){
+        flip = SDL_FLIP_HORIZONTAL;
+    }
+    SDL_RenderCopyEx(renderer, entity.getEntity().getTexture(), nullptr, &destRect, 0, nullptr, flip);
+    //SDL_RenderCopy(renderer, entity.getEntity().getTexture(), nullptr, &destRect);
 }
 
 // void Render::characterMove(Entity &entity){
