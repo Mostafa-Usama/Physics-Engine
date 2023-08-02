@@ -14,6 +14,7 @@ Player::Player(Entity &character)
     isJumping = false;
     isFacingRight = true;
     Xspeed = 1;
+    
 }
 Entity& Player::getEntity(){
     return entity;
@@ -48,7 +49,7 @@ void Player::moveCharacter(float deltatime){
         }
 
         entity.setCurrentFrameX(currentX + (Xspeed));
-        std::cout << "Right: " <<  deltatime << " " << Xspeed << std::endl;
+        // std::cout << "Right: " <<  deltatime << " " << Xspeed << std::endl;
         isFacingRight = true;
     }
     else if (keyboardState[SDL_SCANCODE_LEFT])
@@ -57,7 +58,7 @@ void Player::moveCharacter(float deltatime){
             currentX = 0;
         }
         entity.setCurrentFrameX(currentX - (Xspeed * deltatime));
-        std::cout << "Left: " <<  deltatime << " " << Xspeed << std::endl;
+        // std::cout << "Left: " <<  deltatime << " " << Xspeed << std::endl;
         isFacingRight = false;
     }
     if (keyboardState[SDL_SCANCODE_SPACE] && !isJumping)
@@ -118,10 +119,34 @@ void Player::applyGravity(float deltatime){
         //collided = false;
     }
 }
+void Player::fall(float deltatime){
+    yVelocityDown += gravity;
+    // std::cout << entity.getCurrentFrame().y << " " << yVelocityDown << " ";
+
+    entity.setCurrentFrameY(entity.getCurrentFrame().y + (yVelocityDown * gravity * deltatime));
+    std::cout << (yVelocityDown * gravity * deltatime) << std::endl;
+}
 
 void Player::collide(SDL_Rect &obj){
-    std::cout << entity.getCurrentFrame().y << std::endl;
-    entity.setCurrentFrameY(obj.y - obj.h);
+    
+    if (obj.y >= entity.getCurrentFrame().y && 
+        entity.getCurrentFrame().x + entity.getCurrentFrame().w >= obj.x){
+        entity.setCurrentFrameY(obj.y - obj.h);
+    }
+    if (obj.y < entity.getCurrentFrame().y && 
+        entity.getCurrentFrame().x + (entity.getCurrentFrame().w) >= obj.x){
+        if (isFacingRight){
+        entity.setCurrentFrameX(obj.x - entity.getCurrentFrame().w);
+        }
+        else{
+        entity.setCurrentFrameX(obj.x + obj.w);
+        }
+    }
+    // if (obj.y + obj.h < entity.getCurrentFrame().y &&
+    //     entity.getCurrentFrame().x + entity.getCurrentFrame().w >= obj.x)
+    // {
+    //     entity.setCurrentFrameY(obj.y + obj.h);
+    // }
 }
 //  672
 //  545

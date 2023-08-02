@@ -17,6 +17,7 @@ class Player{
         SDL_bool isColliding(SDL_Rect &obj);
         void collide(SDL_Rect &obj);
         bool getFacing();
+        void fall(float deltatime);
 
     private:
         Entity &entity;

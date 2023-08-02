@@ -13,7 +13,7 @@ class Render{
         Render(const char* title, int width, int height);
         SDL_Texture *loadTexture(const char* filePath);
         void clear();
-        void render(std::vector <Entity> entity, Player& player);
+        void render(std::vector <Entity> entity, Player& player, float deltatime);
         void renderCharacter(Player &entity);
         SDL_Renderer *getRenderer();
         // void characterMove(Entity &entity);

@@ -24,7 +24,7 @@ int main(int argc, char* argv[]){
     
     SDL_Texture *grassTexture = renderWindow.loadTexture("res/images/ground_grass_1.png");
     SDL_Texture *skyTexture = renderWindow.loadTexture("res/images/Sky.png");
-    SDL_Texture *warrior = renderWindow.loadTexture("res/images/warrior.png");
+    SDL_Texture *warrior = renderWindow.loadTexture("res/images/mage.png");
 
     Entity platform(96,96, grassTexture);
     Entity sky(96, 96, skyTexture);
@@ -58,7 +58,7 @@ int main(int argc, char* argv[]){
             renderWindow.clear();
             player.moveCharacter(deltaTime);
             player.applyGravity(deltaTime);
-            renderWindow.render(tileTextures, player);
+            renderWindow.render(tileTextures, player, deltaTime);
             renderWindow.renderCharacter(player);
 
             // Uint32 end = SDL_GetTicks();

@@ -28,7 +28,7 @@ SDL_Texture* Render::loadTexture(const char* texture){
 void Render::clear(){
     SDL_RenderClear(renderer);
 } 
-void Render::render(std::vector <Entity>entity, Player& player ){
+void Render::render(std::vector <Entity>entity, Player& player, float deltatime ){
     // SDL_Rect src;
     // src.x = entity.getCurrentFrame().x;
     // src.y = entity.getCurrentFrame().y;
@@ -46,8 +46,8 @@ void Render::render(std::vector <Entity>entity, Player& player ){
         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-        {0, 0, 0, 0, 0, 0, 0, 1, 1, 0},
+        {0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+        {0, 0, 0, 0, 0, 0, 1, 0, 0, 0},
         {1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
     };
     
@@ -87,10 +87,10 @@ void Render::renderCharacter(Player &entity){
     int y = entity.getEntity().getCurrentFrame().y;
     SDL_Rect destRect = {x, y, width, height};
     SDL_RendererFlip flip;
-    if (!entity.getFacing()){
+    if (entity.getFacing()){
         flip = SDL_FLIP_HORIZONTAL;
     }
-    SDL_RenderCopyEx(renderer, entity.getEntity().getTexture(), nullptr, &destRect, 0, nullptr, flip);
+    SDL_RenderCopyEx(renderer, entity.getEntity().getTexture(), NULL, &destRect, 0, NULL, flip);
     //SDL_RenderCopy(renderer, entity.getEntity().getTexture(), nullptr, &destRect);
 }
 
