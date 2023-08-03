@@ -77,7 +77,7 @@ SDL_bool Player::isColliding(SDL_Rect &obj){
     
     SDL_Rect tmp2 = entity.getCurrentFrame();
 
-    if (tmp2.x + tmp2.w >= obj.x &&
+    if (tmp2.x + (tmp2.w/2) >= obj.x &&
         obj.x + obj.w >= tmp2.x &&
         tmp2.y + tmp2.h >= obj.y &&
         obj.y + obj.h >= tmp2.y 
@@ -107,7 +107,7 @@ void Player::applyGravity(float deltatime){
     } 
     else if (!collided){
         //isJumping = true;
-        yVelocityDown = 200;
+        yVelocityDown = 230;
         yVelocityDown += gravity;
         entity.setCurrentFrameY(entity.getCurrentFrame().y + yVelocityDown * gravity * deltatime);
     }
@@ -128,7 +128,6 @@ void Player::collide(SDL_Rect &obj){
  
     if (obj.y  >= entity.getCurrentFrame().y + entity.getCurrentFrame().h && 
         entity.getCurrentFrame().x  >= obj.x){
-        std::cout << "Facing right" << std::endl;
         entity.setCurrentFrameY(obj.y - obj.h);
     }
     
@@ -141,14 +140,13 @@ void Player::collide(SDL_Rect &obj){
     //     }    
     // }
     if (obj.y < entity.getCurrentFrame().y  && 
-        entity.getCurrentFrame().x + (entity.getCurrentFrame().w) >= obj.x){
+        entity.getCurrentFrame().x + (entity.getCurrentFrame().w/2) >= obj.x){
         if (isFacingRight){
-        entity.setCurrentFrameX(obj.x - entity.getCurrentFrame().w);
+        entity.setCurrentFrameX(obj.x - entity.getCurrentFrame().w/2);
         }
         else{
         entity.setCurrentFrameX(obj.x + obj.w);
         }
-        std::cout << "Horizonral " << std::endl;
     }
     // if (obj.y + obj.h < entity.getCurrentFrame().y &&
     //     entity.getCurrentFrame().x + entity.getCurrentFrame().w >= obj.x)

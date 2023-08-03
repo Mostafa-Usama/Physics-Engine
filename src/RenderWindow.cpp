@@ -83,7 +83,14 @@ void Render::render(std::vector <Entity>entity, Player& player, float deltatime 
 }
 
 void Render::renderCharacter(Player &entity){
-    
+    SDL_Rect playerRect = {
+        static_cast<int>(entity.getEntity().getCurrentFrame().x),
+        static_cast<int>(entity.getEntity().getCurrentFrame().y),
+        entity.getEntity().getCurrentFrame().w,
+        entity.getEntity().getCurrentFrame().h};
+
+    SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255); // Set color to red
+    SDL_RenderDrawRect(renderer, &playerRect);
     int width = entity.getEntity().getCurrentFrame().w ;
     int height = entity.getEntity().getCurrentFrame().h ;
     int x = entity.getEntity().getCurrentFrame().x;
