@@ -66,8 +66,8 @@ void Player::moveCharacter(float deltatime){
      
             isJumping = true;
             yVelocityUp = 200;
-            yVelocityDown = -150;
-            collided = false;
+            yVelocityDown = 150;
+           // collided = false;
     }
 
     
@@ -106,6 +106,8 @@ void Player::applyGravity(float deltatime){
         }
     } 
     else if (!collided){
+        //isJumping = true;
+        yVelocityDown = 200;
         yVelocityDown += gravity;
         entity.setCurrentFrameY(entity.getCurrentFrame().y + yVelocityDown * gravity * deltatime);
     }
@@ -115,25 +117,30 @@ void Player::applyGravity(float deltatime){
         //std::cout << "fell" << std::endl;
         isJumping = false;
         yVelocityUp = 200;
-        yVelocityDown = -150;
+        yVelocityDown = 150;
         //collided = false;
     }
 }
-void Player::fall(float deltatime){
-    yVelocityDown += gravity;
-    // std::cout << entity.getCurrentFrame().y << " " << yVelocityDown << " ";
 
-    entity.setCurrentFrameY(entity.getCurrentFrame().y + (yVelocityDown * gravity * deltatime));
-    std::cout << (yVelocityDown * gravity * deltatime) << std::endl;
-}
 
 void Player::collide(SDL_Rect &obj){
     
-    if (obj.y >= entity.getCurrentFrame().y && 
-        entity.getCurrentFrame().x + entity.getCurrentFrame().w >= obj.x){
+ 
+    if (obj.y  >= entity.getCurrentFrame().y + entity.getCurrentFrame().h && 
+        entity.getCurrentFrame().x  >= obj.x){
+        std::cout << "Facing right" << std::endl;
         entity.setCurrentFrameY(obj.y - obj.h);
     }
-    if (obj.y < entity.getCurrentFrame().y && 
+    
+    // if (!isFacingRight){
+    //     if (obj.y  >= entity.getCurrentFrame().y + entity.getCurrentFrame().h && 
+    //         entity.getCurrentFrame().x + entity.getCurrentFrame().w >= obj.x){
+    //          std::cout << "Facing left " << std::endl;
+
+    //         entity.setCurrentFrameY(obj.y - obj.h);
+    //     }    
+    // }
+    if (obj.y < entity.getCurrentFrame().y  && 
         entity.getCurrentFrame().x + (entity.getCurrentFrame().w) >= obj.x){
         if (isFacingRight){
         entity.setCurrentFrameX(obj.x - entity.getCurrentFrame().w);
@@ -141,6 +148,7 @@ void Player::collide(SDL_Rect &obj){
         else{
         entity.setCurrentFrameX(obj.x + obj.w);
         }
+        std::cout << "Horizonral " << std::endl;
     }
     // if (obj.y + obj.h < entity.getCurrentFrame().y &&
     //     entity.getCurrentFrame().x + entity.getCurrentFrame().w >= obj.x)

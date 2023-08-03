@@ -29,7 +29,7 @@ int main(int argc, char* argv[]){
     Entity platform(96,96, grassTexture);
     Entity sky(96, 96, skyTexture);
 
-    Entity character(480, 600-(96*2), warrior);
+    Entity character(475, 600-(96*2), warrior);
     // const int Xspeed = 10;
     // const int Yspeed
     const float gravity = 0.9;

@@ -36,8 +36,9 @@ void Render::render(std::vector <Entity>entity, Player& player, float deltatime 
     // src.h = entity.getCurrentFrame().h;
 
     // SDL_Rect dst;
-    int width = entity[0].getCurrentFrame().w * 3;
-    int height = entity[0].getCurrentFrame().h * 3;
+    int width = entity[0].getCurrentFrame().w;
+    int height = entity[0].getCurrentFrame().h ;
+    
 
     const int rows = 672 / height;
     const int cols = 960 / width;
@@ -46,8 +47,8 @@ void Render::render(std::vector <Entity>entity, Player& player, float deltatime 
         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-        {0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-        {0, 0, 0, 0, 0, 0, 1, 0, 0, 0},
+        {0, 1, 0, 0, 0, 0, 0, 0, 0, 1},
+        {0, 0, 1, 0, 0, 0, 1, 0, 0, 0},
         {1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
     };
     
@@ -61,14 +62,16 @@ void Render::render(std::vector <Entity>entity, Player& player, float deltatime 
                 SDL_Rect destRect = {col * width, row * height, width, height};
                 SDL_RenderCopy(renderer, entity[tileType].getTexture(), NULL, &destRect);
                 if(player.isColliding(destRect) && tileType == 1){
-                    std::cout << "Collision detected ground" << std::endl;
+                   std::cout << "Collision detected ground" << std::endl;
                     player.setCollided(true);
                     player.collide(destRect);
                 }
-            //     else {
-            //         player.setCollided(false);
-            //    //     std::cout << "Collision detected sky" << std::endl;
-            //     }
+                else if (player.isColliding(destRect) && tileType == 0)
+                {
+                    player.setCollided(false);
+                   std::cout << "Collision detected sky" << std::endl;
+                }
+
                 // else if (player.isColliding(destRect) && tileType == 1)
                 // {
                 //     player.setCollided(false);
@@ -81,8 +84,8 @@ void Render::render(std::vector <Entity>entity, Player& player, float deltatime 
 
 void Render::renderCharacter(Player &entity){
     
-    int width = entity.getEntity().getCurrentFrame().w * 3;
-    int height = entity.getEntity().getCurrentFrame().h * 3;
+    int width = entity.getEntity().getCurrentFrame().w ;
+    int height = entity.getEntity().getCurrentFrame().h ;
     int x = entity.getEntity().getCurrentFrame().x;
     int y = entity.getEntity().getCurrentFrame().y;
     SDL_Rect destRect = {x, y, width, height};

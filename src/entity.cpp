@@ -6,8 +6,8 @@ Entity::Entity(float x, float y, SDL_Texture *texture):x(x), y(y), texture(textu
 
     currentFrame.x = x;
     currentFrame.y = y;
-    currentFrame.w = 32;
-    currentFrame.h = 32;
+    currentFrame.w = 96;
+    currentFrame.h = 96;
 }
 Entity::Entity(){
 
